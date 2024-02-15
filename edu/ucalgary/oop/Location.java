@@ -1,15 +1,19 @@
 package edu.ucalgary.oop;
+import java.util.ArrayList;
 
 public class Location {
     private String name;
     private String address;
-    private DisasterVictim[] occupants;
-    private Supply[] supplies;
+    private ArrayList<DisasterVictim> occupants;
+    private ArrayList<Supply> supplies;
 
     public Location(String name, String address) {
         this.name = name;
         this.address = address;
+        this.occupants = new ArrayList<>();
+        this.supplies = new ArrayList<>();
     }
+
 
     public String getName() {
         return name;
@@ -26,64 +30,35 @@ public class Location {
         this.address = address;
     }
 
-    public DisasterVictim[] getOccupants() {
+    public ArrayList<DisasterVictim> getOccupants() {
         return occupants;
     }
 
-    public void setOccupants(DisasterVictim[] occupants) {
+    public void setOccupants(ArrayList<DisasterVictim> occupants) {
         this.occupants = occupants;
     }
 
-    public Supply[] getSupplies() {
+    public ArrayList<Supply> getSupplies() {
         return supplies;
     }
 
-    public void setSupplies(Supply[] supplies) {
+    public void setSupplies(ArrayList<Supply> supplies) {
         this.supplies = supplies;
     }
+
     public void addOccupant(DisasterVictim occupant) {
-        DisasterVictim[] newOccupants = new DisasterVictim[occupants.length + 1];
-        System.arraycopy(occupants, 0, newOccupants, 0, occupants.length);
-        newOccupants[occupants.length] = occupant;
-        occupants = newOccupants;
+        this.occupants.add(occupant);
     }
 
     public void removeOccupant(DisasterVictim occupant) {
-        int index = -1;
-        for (int i = 0; i < occupants.length; i++) {
-            if (occupants[i].equals(occupant)) {
-                index = i;
-                break;
-            }
-        }
-        if (index != -1) {
-            DisasterVictim[] newOccupants = new DisasterVictim[occupants.length - 1];
-            System.arraycopy(occupants, 0, newOccupants, 0, index);
-            System.arraycopy(occupants, index + 1, newOccupants, index, occupants.length - index - 1);
-            occupants = newOccupants;
-        }
+        this.occupants.remove(occupant);
     }
 
     public void addSupply(Supply supply) {
-        Supply[] newSupplies = new Supply[supplies.length + 1];
-        System.arraycopy(supplies, 0, newSupplies, 0, supplies.length);
-        newSupplies[supplies.length] = supply;
-        supplies = newSupplies;
+        this.supplies.add(supply);
     }
 
     public void removeSupply(Supply supply) {
-        int index = -1;
-        for (int i = 0; i < supplies.length; i++) {
-            if (supplies[i].equals(supply)) {
-                index = i;
-                break;
-            }
-        }
-        if (index != -1) {
-            Supply[] newSupplies = new Supply[supplies.length - 1];
-            System.arraycopy(supplies, 0, newSupplies, 0, index);
-            System.arraycopy(supplies, index + 1, newSupplies, index, supplies.length - index - 1);
-            supplies = newSupplies;
-        }
+        this.supplies.remove(supply);
     }
 }
