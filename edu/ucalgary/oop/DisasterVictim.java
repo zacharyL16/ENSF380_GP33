@@ -1,5 +1,6 @@
 package edu.ucalgary.oop;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,24 +12,23 @@ public class DisasterVictim {
     private String comments;
     private static int lastSocialID = 0;
     private int ASSIGNED_SOCIAL_ID;
-    private MedicalRecord[] medicalRecords;
-    private FamilyRelation[] familyConnections;
+    private ArrayList<MedicalRecord> medicalRecords;
+    private ArrayList<FamilyRelation> familyConnections;
     private String ENTRY_DATE;
-    private Supply[] personalBelongings;
+    private ArrayList<Supply> personalBelongings;
     private String gender;
-    private int medicalRecordCount;
-    private int familyConnectionCount;
-    private int personalBelongingsCount;
-    private int counter;
+    private static int counter;
 
     public DisasterVictim(String firstName, String ENTRY_DATE) {
         this.firstName = firstName;
         this.ENTRY_DATE = ENTRY_DATE;
         this.ASSIGNED_SOCIAL_ID = ++lastSocialID;
-        this.medicalRecords = new MedicalRecord[10];
-        this.familyConnections = new FamilyRelation[10];
-        this.personalBelongings = new Supply[10];
+        this.medicalRecords = new ArrayList<>();
+        this.familyConnections = new ArrayList<>();
+        this.personalBelongings = new ArrayList<>();
     }
+
+    // Getters and setters
 
     public String getFirstName() {
         return firstName;
@@ -47,7 +47,7 @@ public class DisasterVictim {
     }
 
     public MedicalRecord[] getMedicalRecords() {
-        return Arrays.copyOf(medicalRecords, medicalRecordCount);
+        return medicalRecords.toArray(new MedicalRecord[0]);
     }
 
     public String getEntryDate() {
@@ -59,11 +59,11 @@ public class DisasterVictim {
     }
 
     public Supply[] getPersonalBelongings() {
-        return Arrays.copyOf(personalBelongings, personalBelongingsCount);
+        return personalBelongings.toArray(new Supply[0]);
     }
 
     public FamilyRelation[] getFamilyConnections() {
-        return Arrays.copyOf(familyConnections, familyConnectionCount);
+        return familyConnections.toArray(new FamilyRelation[0]);
     }
 
     public String getGender() {
@@ -93,54 +93,40 @@ public class DisasterVictim {
     }
 
     public void setMedicalRecords(MedicalRecord[] medicalRecords) {
-        this.medicalRecords = medicalRecords;
-        this.medicalRecordCount = medicalRecords.length;
+        this.medicalRecords = new ArrayList<>(Arrays.asList(medicalRecords));
     }
 
     public void setPersonalBelongings(Supply[] personalBelongings) {
-        this.personalBelongings = personalBelongings;
-        this.personalBelongingsCount = personalBelongings.length;
+        this.personalBelongings = new ArrayList<>(Arrays.asList(personalBelongings));
     }
 
     public void setFamilyConnections(FamilyRelation[] familyConnections) {
-        this.familyConnections = familyConnections;
-        this.familyConnectionCount = familyConnections.length;
+        this.familyConnections = new ArrayList<>(Arrays.asList(familyConnections));
     }
 
     public void setGender(String gender) {
         this.gender = gender;
     }
 
+    // Other methods
+
     public void addPersonalBelonging(Supply supply) {
-        personalBelongings = Arrays.copyOf(personalBelongings, personalBelongings.length + 1);
-        personalBelongings[personalBelongings.length - 1] = supply;
+        personalBelongings.add(supply);
     }
 
     public void removePersonalBelonging(Supply supply) {
-        for (int i = 0; i < personalBelongings.length; i++) {
-            if (personalBelongings[i] != null && personalBelongings[i].equals(supply)) {
-                personalBelongings[i] = null;
-                break;
-            }
-        }
+        personalBelongings.remove(supply);
     }
 
     public void addFamilyConnection(FamilyRelation familyConnection) {
-        familyConnections = Arrays.copyOf(familyConnections, familyConnections.length + 1);
-        familyConnections[familyConnections.length - 1] = familyConnection;
+        familyConnections.add(familyConnection);
     }
 
     public void removeFamilyConnection(FamilyRelation familyConnection) {
-        for (int i = 0; i < familyConnections.length; i++) {
-            if (familyConnections[i] != null && familyConnections[i].equals(familyConnection)) {
-                familyConnections[i] = null;
-                break;
-            }
-        }
+        familyConnections.remove(familyConnection);
     }
 
     public void addMedicalRecord(MedicalRecord medicalRecord) {
-        medicalRecords = Arrays.copyOf(medicalRecords, medicalRecords.length + 1);
-        medicalRecords[medicalRecords.length - 1] = medicalRecord;
+        medicalRecords.add(medicalRecord);
     }
 }
