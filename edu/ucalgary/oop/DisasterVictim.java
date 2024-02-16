@@ -1,5 +1,6 @@
 package edu.ucalgary.oop;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.time.LocalDate;
@@ -18,17 +19,27 @@ public class DisasterVictim {
     private ArrayList<Supply> personalBelongings;
     private String gender;
     private static int counter;
+    private boolean isValidDateFormat(String date) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate.parse(date, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
 
     public DisasterVictim(String firstName, String ENTRY_DATE) {
         this.firstName = firstName;
+        if (!isValidDateFormat(ENTRY_DATE)) {
+            throw new IllegalArgumentException("Invalid date format.");
+        }
         this.ENTRY_DATE = ENTRY_DATE;
         this.ASSIGNED_SOCIAL_ID = ++lastSocialID;
         this.medicalRecords = new ArrayList<>();
         this.familyConnections = new ArrayList<>();
         this.personalBelongings = new ArrayList<>();
     }
-
-    // Getters and setters
 
     public String getFirstName() {
         return firstName;
@@ -79,13 +90,12 @@ public class DisasterVictim {
     }
 
     public void setDateOfBirth(String dateOfBirth) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate.parse(dateOfBirth, formatter);
-        } catch (Exception e) {
+        if (isValidDateFormat(dateOfBirth)) {
+            this.dateOfBirth = dateOfBirth;
+        }
+        else {
             throw new IllegalArgumentException("Invalid date format.");
         }
-        this.dateOfBirth = dateOfBirth;
     }
 
     public void setComments(String comments) {
