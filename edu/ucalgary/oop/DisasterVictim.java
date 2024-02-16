@@ -19,6 +19,7 @@ public class DisasterVictim {
     private int medicalRecordCount;
     private int familyConnectionCount;
     private int personalBelongingsCount;
+    private int counter;
 
     public DisasterVictim(String firstName, String ENTRY_DATE) {
         this.firstName = firstName;
@@ -111,48 +112,35 @@ public class DisasterVictim {
     }
 
     public void addPersonalBelonging(Supply supply) {
-        if (personalBelongings.length == personalBelongingsCount) {
-            personalBelongings = Arrays.copyOf(personalBelongings, personalBelongings.length * 2);
-        }
-        personalBelongings[personalBelongingsCount++] = supply;
+        personalBelongings = Arrays.copyOf(personalBelongings, personalBelongings.length + 1);
+        personalBelongings[personalBelongings.length - 1] = supply;
     }
 
     public void removePersonalBelonging(Supply supply) {
-        for (int i = 0; i < personalBelongingsCount; i++) {
-            if (personalBelongings[i].equals(supply)) {
-                for (int j = i; j < personalBelongingsCount - 1; j++) {
-                    personalBelongings[j] = personalBelongings[j + 1];
-                }
-                personalBelongings[--personalBelongingsCount] = null;
+        for (int i = 0; i < personalBelongings.length; i++) {
+            if (personalBelongings[i] != null && personalBelongings[i].equals(supply)) {
+                personalBelongings[i] = null;
                 break;
             }
         }
     }
 
     public void addFamilyConnection(FamilyRelation familyConnection) {
-        if (familyConnections.length == familyConnectionCount) {
-            familyConnections = Arrays.copyOf(familyConnections, familyConnections.length * 2);
-        }
-        familyConnections[familyConnectionCount++] = familyConnection;
+        familyConnections = Arrays.copyOf(familyConnections, familyConnections.length + 1);
+        familyConnections[familyConnections.length - 1] = familyConnection;
     }
 
     public void removeFamilyConnection(FamilyRelation familyConnection) {
-        for (int i = 0; i < familyConnectionCount; i++) {
-            if (familyConnections[i].equals(familyConnection)) {
-                for (int j = i; j < familyConnectionCount - 1; j++) {
-                    familyConnections[j] = familyConnections[j + 1];
-                }
-                familyConnections[--familyConnectionCount] = null;
+        for (int i = 0; i < familyConnections.length; i++) {
+            if (familyConnections[i] != null && familyConnections[i].equals(familyConnection)) {
+                familyConnections[i] = null;
                 break;
             }
         }
     }
 
     public void addMedicalRecord(MedicalRecord medicalRecord) {
-        if (medicalRecords.length == medicalRecordCount) {
-            medicalRecords = Arrays.copyOf(medicalRecords, medicalRecords.length * 2);
-        }
-        medicalRecords[medicalRecordCount++] = medicalRecord;
+        medicalRecords = Arrays.copyOf(medicalRecords, medicalRecords.length + 1);
+        medicalRecords[medicalRecords.length - 1] = medicalRecord;
     }
-
 }
