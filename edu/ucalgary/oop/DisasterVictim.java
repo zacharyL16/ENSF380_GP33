@@ -1,5 +1,9 @@
 package edu.ucalgary.oop;
 
+import java.util.Arrays;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class DisasterVictim {
     private String firstName;
     private String lastName;
@@ -12,14 +16,17 @@ public class DisasterVictim {
     private String ENTRY_DATE;
     private Supply[] personalBelongings;
     private String gender;
+    private int medicalRecordCount;
+    private int familyConnectionCount;
+    private int personalBelongingsCount;
 
     public DisasterVictim(String firstName, String ENTRY_DATE) {
-        this.setFirstName(firstName);
+        this.firstName = firstName;
         this.ENTRY_DATE = ENTRY_DATE;
         this.ASSIGNED_SOCIAL_ID = ++lastSocialID;
-        this.medicalRecords = new MedicalRecord[0];
-        this.familyConnections = new FamilyRelation[0];
-        this.personalBelongings = new Supply[0];
+        this.medicalRecords = new MedicalRecord[10];
+        this.familyConnections = new FamilyRelation[10];
+        this.personalBelongings = new Supply[10];
     }
 
     public String getFirstName() {
@@ -39,7 +46,7 @@ public class DisasterVictim {
     }
 
     public MedicalRecord[] getMedicalRecords() {
-        return medicalRecords;
+        return Arrays.copyOf(medicalRecords, medicalRecordCount);
     }
 
     public String getEntryDate() {
@@ -51,11 +58,11 @@ public class DisasterVictim {
     }
 
     public Supply[] getPersonalBelongings() {
-        return personalBelongings;
+        return Arrays.copyOf(personalBelongings, personalBelongingsCount);
     }
 
     public FamilyRelation[] getFamilyConnections() {
-        return familyConnections;
+        return Arrays.copyOf(familyConnections, familyConnectionCount);
     }
 
     public String getGender() {
@@ -71,6 +78,12 @@ public class DisasterVictim {
     }
 
     public void setDateOfBirth(String dateOfBirth) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate.parse(dateOfBirth, formatter);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date format.");
+        }
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -80,17 +93,66 @@ public class DisasterVictim {
 
     public void setMedicalRecords(MedicalRecord[] medicalRecords) {
         this.medicalRecords = medicalRecords;
+        this.medicalRecordCount = medicalRecords.length;
     }
 
     public void setPersonalBelongings(Supply[] personalBelongings) {
         this.personalBelongings = personalBelongings;
+        this.personalBelongingsCount = personalBelongings.length;
     }
 
     public void setFamilyConnections(FamilyRelation[] familyConnections) {
         this.familyConnections = familyConnections;
+        this.familyConnectionCount = familyConnections.length;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public void addPersonalBelonging(Supply supply) {
+        if (personalBelongings.length == personalBelongingsCount) {
+            personalBelongings = Arrays.copyOf(personalBelongings, personalBelongings.length * 2);
+        }
+        personalBelongings[personalBelongingsCount++] = supply;
+    }
+
+    public void removePersonalBelonging(Supply supply) {
+        for (int i = 0; i < personalBelongingsCount; i++) {
+            if (personalBelongings[i].equals(supply)) {
+                for (int j = i; j < personalBelongingsCount - 1; j++) {
+                    personalBelongings[j] = personalBelongings[j + 1];
+                }
+                personalBelongings[--personalBelongingsCount] = null;
+                break;
+            }
+        }
+    }
+
+    public void addFamilyConnection(FamilyRelation familyConnection) {
+        if (familyConnections.length == familyConnectionCount) {
+            familyConnections = Arrays.copyOf(familyConnections, familyConnections.length * 2);
+        }
+        familyConnections[familyConnectionCount++] = familyConnection;
+    }
+
+    public void removeFamilyConnection(FamilyRelation familyConnection) {
+        for (int i = 0; i < familyConnectionCount; i++) {
+            if (familyConnections[i].equals(familyConnection)) {
+                for (int j = i; j < familyConnectionCount - 1; j++) {
+                    familyConnections[j] = familyConnections[j + 1];
+                }
+                familyConnections[--familyConnectionCount] = null;
+                break;
+            }
+        }
+    }
+
+    public void addMedicalRecord(MedicalRecord medicalRecord) {
+        if (medicalRecords.length == medicalRecordCount) {
+            medicalRecords = Arrays.copyOf(medicalRecords, medicalRecords.length * 2);
+        }
+        medicalRecords[medicalRecordCount++] = medicalRecord;
+    }
+
 }
